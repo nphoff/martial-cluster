@@ -27,8 +27,12 @@ pip-log.txt
 .mr.developer.cfg
 
 #Developer keys:
-src/keys.py
+lib/keys.py
 
 #emacs files:
 *~
 \#*
+
+#data directory:
+data/
+*.json
