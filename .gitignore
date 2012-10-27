@@ -37,3 +37,6 @@ lib/keys.py
 #data directory:
 data/
 *.json
+
+#notes
+notes.txt

@@ -34,7 +34,7 @@ class TwitterScraper(object):
         
     def scrapeSearch(self,query):
         self.query = query
-        params = '%23' + self.query + '&rpp=100' + '&lang=en'
+        params = '%23' + self.query + '%20-rt' + '&rpp=100' + '&lang=en'
         print("Scraping data")
         self.data = []
         for i in range(1,16):
@@ -84,7 +84,7 @@ class TwitterScraper(object):
         for user in self.userList:
             i = i + 1
             print("Processing user %d of %d" % (i, len(self.userList)))
-            params = '%40' + user + '&rpp=100' + '&lang=en'
+            params = 'from%3A' + user + '%20-rt' + '&rpp=100' + '&lang=en'
             r = requests.get(self.basic_search_URL + params)
             if(r.ok == True):
                 if(r.json['results'] == []):
