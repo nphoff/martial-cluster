@@ -83,7 +83,9 @@ class TwitterScraper(object):
         i = 0
         for user in self.userList:
             i = i + 1
-            print("Processing user %d of %d" % (i, len(self.userList)))
+            print("Processing user %d of %d" % (i, min(len(self.userList),100)))
+            if i >= 100:
+                break
             params = 'from%3A' + user + '%20-rt' + '&rpp=100' + '&lang=en'
             r = requests.get(self.basic_search_URL + params)
             if(r.ok == True):

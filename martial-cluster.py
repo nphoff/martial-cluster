@@ -1,5 +1,8 @@
 from lib.TwitterScraper import TwitterScraper
+from lib.TweetClusterer import TweetClusterer
+import pylab
 import sys
+import IPython
 
 #Master list of martial arts used.  Add things here if curious.
 martial_arts = ['karate', 'taekwondo', 'haidonggumdo', 'dambe', 'jitsu', 'capoeira', 'kenpo', 'kickboxing', 'jeetkunedo', 'kungfu', 'taichi', 'aikido', 'judo', 'kendo', 'ninjutsu', 'hapkido', 'muaythai']
@@ -28,7 +31,31 @@ def getAllUserTweets():
         ts.getBroadUserTweets(ma)
         ts.saveBroadUserTweets(ma)
 
-
+def compareWordPopularity():
+    bulk = TweetClusterer()
+    bulk.getBulkCorpus()
+    bulk.cleanCorpus()
+    bulk_words = bulk.makeWordCountTuples()
+    comparison_vectors = []
+    legend = []
+    for ma in martial_arts:
+        tmp = TweetClusterer()
+        tmp.getCorpus(ma)
+        tmp.cleanCorpus()
+        tmp_words = tmp.makeWordCountTuples()
+        sim = bulk.compareWordCountTuples(bulk_words, tmp_words)
+        comparison_vectors.append(sim)
+        legend.append(ma)
+    #plotting
+    for vec in comparison_vectors:
+        if vec == []:
+            continue
+        else:
+            a = pylab.plot(vec)
+            pylab.hold(True)
+            pylab.legend([a], [ma])
+    IPython.embed()
+    pylab.show()
 if __name__ == '__main__':
     if len(sys.argv) > 2:
         sys.exit("Error, received too many input arguments.")
@@ -44,7 +71,9 @@ where command is one of the following:
                'u': userList,
                'userlist': userList,
                'a': getAllUserTweets,
-               'allusertweets': getAllUserTweets}
+               'allusertweets': getAllUserTweets,
+               'c': compareWordPopularity,
+               'compare': compareWordPopularity}
 
     if sys.argv[1] in options:
         options[sys.argv[1]]()
